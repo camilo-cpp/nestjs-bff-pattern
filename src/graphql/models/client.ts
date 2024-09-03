@@ -2,14 +2,6 @@ import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
 import { CustomerGroup } from './customer-group';
 import { PaymentMethod } from './payment-method';
-import { Portfolio } from './portfolio';
-
-@ObjectType()
-class UpdateDate {
-  @Field()
-  date: string;
-}
-
 @ObjectType()
 export class Client {
   @Field(() => ID)
@@ -26,9 +18,6 @@ export class Client {
 
   @Field()
   channel: string;
-
-  @Field()
-  clientId: string;
 
   @Field()
   country: string;
@@ -87,9 +76,6 @@ export class Client {
   @Field(() => [PaymentMethod])
   paymentMethods: PaymentMethod[];
 
-  @Field(() => [Portfolio])
-  portfolio: Portfolio[];
-
   @Field()
   priceGroup: string;
 
@@ -105,8 +91,8 @@ export class Client {
   @Field()
   supplyCenter: string;
 
-  @Field(() => UpdateDate)
-  updateDate: UpdateDate;
+  @Field()
+  updateDate: string;
 
   @Field()
   vendorGroup: string;
