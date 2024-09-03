@@ -1,0 +1,7 @@
+type PaymentMethod {
+  clientId: String
+  typeCredit: String
+  creditLimit: Int
+  creditUsed: Int
+  amountAvailable: Int
+}
