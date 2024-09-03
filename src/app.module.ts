@@ -9,6 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
+import { AxiosAdapter } from './adapters/http/axios.adapter';
+import { HTTP_ADAPTER } from './constants/injections.constants';
 import { ValidatorEnv } from './config/validators-env';
 
 @Module({
@@ -28,6 +30,13 @@ import { ValidatorEnv } from './config/validators-env';
     }),
   ],
   controllers: [],
-  providers: [AppResolver, AppService],
+  providers: [
+    AppResolver,
+    AppService,
+    {
+      provide: HTTP_ADAPTER,
+      useClass: AxiosAdapter,
+    },
+  ],
 })
 export class AppModule {}

@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { Client } from './graphql/types/types';
+import { HTTP_ADAPTER } from './constants/injections.constants';
+import { HttpAdapterPort } from './interfaces/http.port';
 
 @Injectable()
 export class AppService {
+  constructor(
+    @Inject(HTTP_ADAPTER) private readonly httpAdapter: HttpAdapterPort,
+  ) {}
+
   async getClient(id: string): Promise<Client> {
-    //TODO implement
-    throw new Error('Method not implemented.');
+    return await this.httpAdapter.getClient(id);
   }
 }
