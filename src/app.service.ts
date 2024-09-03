@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Client } from './graphql/types/types';
+import { Client } from './graphql/models';
 import { HTTP_ADAPTER } from './constants/injections.constants';
 import { HttpAdapterPort } from './interfaces/http.port';
 

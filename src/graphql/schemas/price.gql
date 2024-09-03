@@ -1,4 +1,0 @@
-type Price {
-  full_price: Float
-  taxes: [Tax]
-}

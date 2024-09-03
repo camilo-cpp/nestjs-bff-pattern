@@ -1,15 +1,16 @@
-import { Controller } from '@nestjs/common';
-import { Args, Query } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { AppService } from 'src/app.service';
-import { Client } from './graphql/types/types';
+import { Client } from './graphql/models';
 
-@Controller()
+@Resolver(() => Client)
 export class AppResolver {
   constructor(private readonly appService: AppService) {}
 
-  @Query('customer')
-  async getCustomer(@Args('id') id: string): Promise<Client> {
-    return this.appService.getClient(id);
+  @Query(() => Client, { name: 'client' })
+  async getCustomer(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<Client> {
+    return await this.appService.getClient(id);
   }
 }

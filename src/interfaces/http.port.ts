@@ -1,4 +1,4 @@
-import { Client } from 'src/graphql/types/types';
+import { Client } from 'src/graphql/models';
 
 export interface HttpAdapterPort {
   getClient(id: string): Promise<Client>;
