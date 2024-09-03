@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 
-import { Client } from 'src/graphql/types/types';
+import { Client } from 'src/graphql/models';
 import { HttpAdapterPort } from 'src/interfaces/http.port';
 
 export class AxiosAdapter implements HttpAdapterPort {
