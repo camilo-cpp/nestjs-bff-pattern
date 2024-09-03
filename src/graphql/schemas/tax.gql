@@ -1,0 +1,5 @@
+type Tax {
+  taxType: String
+  taxId: String
+  rate: Float
+}

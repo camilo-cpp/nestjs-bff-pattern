@@ -1,0 +1,8 @@
+type CustomerGroup {
+  group: String
+  group1: String
+  group2: String
+  group3: String
+  group4: String
+  group5: String
+}

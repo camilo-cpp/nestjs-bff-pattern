@@ -1,0 +1,8 @@
+type Portfolio {
+  _id: ID
+  channel: String
+  country: String
+  createdDate: String
+  customerCode: String
+  items: [Item]
+}
