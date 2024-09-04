@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Client, Pagination, Portfolio } from './graphql/models';
+import { Client, Item, Portfolio } from './graphql/models';
 import { HTTP_ADAPTER } from './constants/injections.constants';
 import { HttpAdapterPort } from './interfaces/http.port';
 import { ResponseApi } from './interfaces/response.interface';
@@ -15,15 +15,61 @@ export class AppService {
     return await this.httpAdapter.getClient(id);
   }
 
-  async getClientPortfolio(
+  async getClientPortfolio(clientId: string): Promise<Portfolio> {
+    const data = await this.httpAdapter.getClientPortfolio(clientId);
+    return this.mappedDataPortfolio(data);
+  }
+
+  async getPortfolioItems(
+    portfolioId: string,
     pageSize: number,
     currentPage: number,
-    clientId: string,
-  ): Promise<{ data: Portfolio[]; pagination: Pagination }> {
-    return await this.httpAdapter.getClientPortfolio(
+  ): Promise<Item[]> {
+    const data = await this.httpAdapter.getPortfolioItems(
+      portfolioId,
       pageSize,
       currentPage,
-      clientId,
     );
+    return data.map(item => this.mappedDataItem(item));
+  }
+
+  private mappedDataPortfolio(data: any): Portfolio {
+    return {
+      id: data?.ID,
+      portfolioId: data?.PortfolioId,
+      channel: data?.Channel,
+      country: data?.Country,
+      createdDate: data?.CreatedDate,
+      customerCode: data?.CustomerCode,
+    };
+  }
+
+  private mappedDataItem(data: any): Item {
+    return {
+      id: data?.ID,
+      sku: data?.SKU,
+      title: data?.Title,
+      categoryId: data?.CategoryID,
+      category: data?.Category,
+      brand: data?.Brand,
+      price: {
+        fullPrice: data?.Price?.FullPrice,
+        taxes: data?.Price?.Taxes?.map(tax => ({
+          taxType: tax.TaxType,
+          taxId: tax.TaxId,
+          rate: tax.Rate,
+        })),
+      },
+      classification: data?.Classification,
+      unitsPerBox: data?.UnitsPerBox,
+      minOrderUnits: data?.MinOrderUnits,
+      packageDescription: data?.PackageDescription,
+      packageUnitDescription: data?.PackageUnitDescription,
+      quantity_max_redeem: data?.QuantityMaxRedeem,
+      redeem_unit: data?.RedeemUnit,
+      order_reason_redeem: data?.OrderReasonRedeem,
+      sku_redeem: data?.SKURedeem,
+      points: data?.Points,
+    };
   }
 }
