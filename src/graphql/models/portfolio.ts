@@ -1,24 +1,22 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
-import { Item } from './item';
-
 @ObjectType()
 export class Portfolio {
-  @Field(() => ID)
-  _id: string;
+  @Field(() => ID, { nullable: true })
+  id: string;
 
-  @Field()
+  @Field({ nullable: true })
+  portfolioId: string;
+
+  @Field({ nullable: true })
   channel: string;
 
-  @Field()
+  @Field({ nullable: true })
   country: string;
 
-  @Field()
+  @Field({ nullable: true })
   createdDate: string;
 
-  @Field()
+  @Field({ nullable: true })
   customerCode: string;
-
-  @Field(() => [Item])
-  items: Item[];
 }

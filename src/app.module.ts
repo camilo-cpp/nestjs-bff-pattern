@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
 
-import { AppResolver } from './app.resolver';
+import { AppResolver, PortfolioResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { AxiosAdapter } from './adapters/http/axios.adapter';
 import { HTTP_ADAPTER } from './constants/injections.constants';
@@ -27,6 +27,7 @@ import { ValidatorEnv } from './config/validators-env';
   controllers: [],
   providers: [
     AppResolver,
+    PortfolioResolver,
     AppService,
     {
       provide: HTTP_ADAPTER,

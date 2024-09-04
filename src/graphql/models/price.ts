@@ -5,7 +5,7 @@ import { Tax } from './tax';
 @ObjectType()
 export class Price {
   @Field(() => Float)
-  full_price: number;
+  fullPrice: number;
 
   @Field(() => [Tax])
   taxes: Tax[];

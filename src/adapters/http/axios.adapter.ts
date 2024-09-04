@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 
 import axios from 'axios';
 
-import { Client, Pagination, Portfolio } from 'src/graphql/models';
+import { Client, Item, Portfolio } from 'src/graphql/models';
 import { HttpAdapterPort } from 'src/interfaces/http.port';
 import { ResponseApi } from 'src/interfaces/response.interface';
 
@@ -23,13 +23,20 @@ export class AxiosAdapter implements HttpAdapterPort {
     return response.data;
   }
 
-  async getClientPortfolio(
+  async getClientPortfolio(clientId: string): Promise<Portfolio> {
+    const response = await axios.get(
+      `${this.apiPortfolioUrl}/portfolio/client/${clientId}`,
+    );
+    return response.data;
+  }
+
+  async getPortfolioItems(
+    portfolioId: string,
     pageSize: number,
     currentPage: number,
-    clientId: string,
-  ): Promise<{ data: Portfolio[]; pagination: Pagination }> {
+  ): Promise<Item[]> {
     const response = await axios.get(
-      `${this.apiPortfolioUrl}/portfolio/client/${clientId}/?pageSize=${pageSize}&currentPage=${currentPage}`,
+      `${this.apiPortfolioUrl}/portfolio/items/client/${portfolioId}?pageSize=${pageSize}&currentPage=${currentPage}`,
     );
     return response.data;
   }

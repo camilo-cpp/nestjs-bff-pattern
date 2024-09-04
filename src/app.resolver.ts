@@ -1,12 +1,7 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { AppService } from 'src/app.service';
-import {
-  Client,
-  Pagination,
-  Portfolio,
-  ResponseApiClient,
-} from './graphql/models';
+import { Client, Item, Portfolio, ResponseApiClient } from './graphql/models';
 import { ResponseApi } from './interfaces/response.interface';
 
 @Resolver(() => Client)
@@ -20,17 +15,30 @@ export class AppResolver {
     return await this.appService.getClient(id);
   }
 
-  @ResolveField(() => [Portfolio])
-  async getClientPortfolio(
-    @Parent() client: Client,
-    @Args('pageSize', { type: () => Number, nullable: true }) pageSize: number,
-    @Args('currentPage', { type: () => Number, nullable: true })
+  @ResolveField(() => Portfolio, { nullable: true })
+  async getClientPortfolio(@Parent() client: Client): Promise<Portfolio> {
+    return await this.appService.getClientPortfolio(client.id);
+  }
+}
+
+@Resolver(() => Portfolio)
+export class PortfolioResolver {
+  constructor(private readonly appService: AppService) {}
+  @ResolveField(() => [Item], { nullable: true })
+  async getItems(
+    @Parent() portfolio: Portfolio,
+    @Args('pageSize', { type: () => Number, nullable: false })
+    pageSize: number,
+    @Args('currentPage', {
+      type: () => Number,
+      nullable: true,
+    })
     currentPage: number,
-  ): Promise<{ data: Portfolio[]; pagination: Pagination }> {
-    return await this.appService.getClientPortfolio(
+  ) {
+    return await this.appService.getPortfolioItems(
+      portfolio.portfolioId,
       pageSize,
       currentPage,
-      client.id,
     );
   }
 }

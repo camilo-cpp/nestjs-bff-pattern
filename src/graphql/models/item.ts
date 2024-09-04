@@ -1,9 +1,12 @@
-import { ObjectType, Field, Float, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 import { Price } from './price';
 
 @ObjectType()
 export class Item {
+  @Field()
+  id: string;
+
   @Field()
   sku: string;
 
@@ -25,8 +28,8 @@ export class Item {
   @Field()
   unitsPerBox: string;
 
-  @Field(() => Float)
-  minOrderUnits: number;
+  @Field(() => String)
+  minOrderUnits: string;
 
   @Field()
   packageDescription: string;
