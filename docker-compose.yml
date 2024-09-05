@@ -1,0 +1,52 @@
+services:
+  api-portfolio:
+    container_name: api-portfolio
+    image: golang-api-echo:latest
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      MONGO_DATABASE: portfolio-data
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+    depends_on:
+      - mongo
+
+  api-client:
+    container_name: api-client
+    image: nestjs-api-hexagonal-arch:latest
+    ports:
+      - "3001:3001"
+    environment:
+      MONGO_DB_HOST: mongo
+      MONGO_DB_PORT: 27017
+      MONGO_DB_DATABASE: data-client
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_TTL: 20
+    depends_on:
+      - mongo
+      - redis
+
+  bff-app:
+    container_name: app-bff
+    image: nestjs-bff-pattern:latest
+    ports:
+      - "3000:3000"
+    environment:
+      API_CLIENT: http://api-client:3001
+      API_PORTFOLIO: http://api-portfolio:3002
+      PORT: 3000
+    depends_on:
+      - api-client
+      - api-portfolio
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
